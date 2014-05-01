@@ -1,0 +1,5 @@
+# Put anything that cannot be in wilcox-common
+# Radio
+lib/libsec-ril.so
+lib/libril.so
+lib/hw/nfc.MSM8960.so
