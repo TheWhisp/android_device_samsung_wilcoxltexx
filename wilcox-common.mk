@@ -126,7 +126,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.use_data_netmgrd=true \
     lpa.decode=true \
     lpa.use-stagefright=true \
-    rild.libpath=/system/lib/libsec-ril.so \
     persist.rild.nitz_plmn="" \
     persist.rild.nitz_long_ons_0="" \
     persist.rild.nitz_long_ons_1="" \
