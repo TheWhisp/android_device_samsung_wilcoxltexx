@@ -1553,6 +1553,7 @@ SectionVerb
 	Name "FM Digital Radio"
 
 	EnableSequence
+		'Internal FM RX Volume':1:0
 		'PRI_I2S_RX Port Mixer INTERNAL_FM_TX':1:1
 		'PRI_I2S_RX_DL_HL Switch':1:1
 	EndSequence
@@ -1572,6 +1573,7 @@ SectionVerb
 	Name "FM Digital RadioPROXY Rx"
 
 	EnableSequence
+		'Internal FM RX Volume':1:0
 		'AFE_PCM_RX Port Mixer INTERNAL_FM_TX':1:1
 		'PCM_RX_DL_HL Switch':1:1
 	EndSequence
@@ -2953,8 +2955,8 @@ SectionDevice
 		'RX2 MIX1 INP1':0:RX2
 		'HPHL DAC Switch':1:1
 		'HPHR DAC Switch':1:1
-		'HPHL Volume':1:50
-		'HPHR Volume':1:50
+		'HPHL Volume':1:50%
+		'HPHR Volume':1:50%
 		'RX1 Digital Volume':2:67.7%
 		'RX2 Digital Volume':2:67.7%
 	EndSequence
@@ -3265,8 +3267,8 @@ SectionDevice
 		'PRI_TX Channels':0:Two
 		'AIF1_CAP Mixer SLIM TX1':1:1
 		'AIF1_CAP Mixer SLIM TX2':1:1
-		'SLIM TX1 MUX':0:DEC1
-		'SLIM TX2 MUX':0:DEC2
+		'SLIM TX1 MUX':0:DEC2
+		'SLIM TX2 MUX':0:DEC1
 		'DEC1 MUX':0:ADC1
 		'DEC2 MUX':0:ADC3
 		'ADC1 Volume':2:78.4%
@@ -3327,7 +3329,7 @@ SectionDevice
 		'AIF1_CAP Mixer SLIM TX1':1:1
 		'SLIM TX1 MUX':0:DEC4
 		'DEC4 MUX':0:ADC1
-		'ADC1 Volume':2:67.8%
+		'ADC1 Volume':2:78.4%
 		'DEC4 Volume':2:77.7%
 	EndSequence
 
@@ -3825,6 +3827,72 @@ SectionDevice
 
 	ACDBID	166:2
 	EffectsMixerCTL "SRS TruMedia"
+
+EndSection
+
+SectionDevice
+	Name "FM Headset"
+	Comment "FM Headset device"
+
+	EnableSequence
+		'PRI_RX Channels':0:Two
+		'SLIM RX1 MUX':0:AIF1_PB
+		'SLIM RX2 MUX':0:AIF1_PB
+		'RX1 MIX1 INP1':0:RX1
+		'RX2 MIX1 INP1':0:RX2
+		'HPHL DAC Switch':1:1
+		'HPHR DAC Switch':1:1
+		'HPHL Volume':1:100%
+		'HPHR Volume':1:100%
+		'RX1 Digital Volume':2:63.7%
+		'RX2 Digital Volume':2:63.7%
+		'COMP1 Switch':1:1
+	EndSequence
+
+	DisableSequence
+		'RX1 MIX1 INP1':0:ZERO
+		'RX2 MIX1 INP1':0:ZERO
+		'HPHL DAC Switch':1:0
+		'SLIM RX1 MUX':0:ZERO
+		'SLIM RX2 MUX':0:ZERO
+		'HPHR DAC Switch':1:0
+		'HPHL Volume':1:0
+		'HPHR Volume':1:0
+		'RX1 Digital Volume':1:0
+		'RX2 Digital Volume':1:0
+		'COMP1 Switch':1:0
+	EndSequence
+
+	ACDBID  105:1
+	EffectsMixerCTL "SRS TruMedia"
+	EC_REF_RXMixerCTL "I2S_RX"
+
+EndSection
+
+SectionDevice
+	Name "FM Speaker"
+	Comment "FM Speaker device"
+
+	EnableSequence
+		'PRI_RX Channels':0:One
+		'RX4 MIX1 INP1':0:RX1
+		'SLIM RX1 MUX':0:AIF1_PB
+		'SPK DAC Switch':1:1
+		'RX4 Digital Volume':1:68%
+		'SPK DRV Volume':1:100%
+	EndSequence
+
+	DisableSequence
+		'RX4 MIX1 INP1':0:ZERO
+		'SLIM RX1 MUX':0:ZERO
+		'SPK DAC Switch':1:0
+		'RX4 Digital Volume':1:0
+		'SPK DRV Volume':1:0%
+	EndSequence
+
+	ACDBID  106:1
+	EffectsMixerCTL "SRS TruMedia"
+	EC_REF_RXMixerCTL "I2S_RX"
 
 EndSection
 
@@ -4687,6 +4755,28 @@ SectionModifier
 	Name "Play FM"
 
 	EnableSequence
+		'Internal FM RX Volume':1:0
+		'PRI_I2S_RX Port Mixer INTERNAL_FM_TX':1:1
+		'PRI_I2S_RX_DL_HL Switch':1:1
+	EndSequence
+
+	DisableSequence
+		'PRI_I2S_RX Port Mixer INTERNAL_FM_TX':1:0
+		'PRI_I2S_RX_DL_HL Switch':1:0
+	EndSequence
+
+	# ALSA PCMs
+	PlaybackPCM 5
+	CapturePCM 6
+	PlaybackVolume "Internal FM RX Volume"
+
+EndSection
+
+SectionModifier
+	Name "Play FMSpeaker FM Tx"
+
+	EnableSequence
+		'Internal FM RX Volume':1:0
 		'PRI_I2S_RX Port Mixer INTERNAL_FM_TX':1:1
 		'PRI_I2S_RX_DL_HL Switch':1:1
 	EndSequence
@@ -4706,6 +4796,7 @@ SectionModifier
 	Name "Play FMPROXY Rx"
 
 	EnableSequence
+		'Internal FM RX Volume':1:0
 		'AFE_PCM_RX Port Mixer INTERNAL_FM_TX':1:1
 		'PCM_RX_DL_HL Switch':1:1
 	EndSequence

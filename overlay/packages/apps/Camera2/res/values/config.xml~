@@ -18,11 +18,10 @@
 -->
 
 <resources>
-    <!-- The camera removes the focus modes by default when touch-to-focus exists. Use this option to change that behavior -->
-    <bool name="wantsFocusModes">true</bool>
-    <!-- Ignore preferred preview size and use best value from supported preview sizes -->
+    <!-- Use ZSL mode for Qualcomm cameras -->
+    <bool name="enableZSL">false</bool>
+    <!-- Ignore bogus preferred preview size -->
     <bool name="ignorePreferredPreviewSizeForVideo">true</bool>
-    <bool name="noFaceDetectOnFrontCamera">true</bool>
-    <!-- Magic for enabling ZSL on Samsung cameras -->
-    <bool name="sendMagicSamsungZSLCommand">true</bool>
+    <!-- Enable histogram support -->
+    <bool name="enableHistogram">true</bool>
 </resources>

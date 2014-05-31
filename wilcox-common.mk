@@ -17,12 +17,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 # Also get non-open-source specific aspects if available
 $(call inherit-product-if-exists, vendor/samsung/wilcox-common/wilcox-common-vendor.mk)
 
-# Overlays
+# Common overlay
 DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcox-common/overlay
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
+
+PRODUCT_BOOT_JARS += qcmediaplayer
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 960
@@ -36,12 +38,6 @@ PRODUCT_COPY_FILES += \
 # Media Profile
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml
-
-# GPS
-PRODUCT_PACKAGES += \
-    gps.msm8960 \
-    gps.conf \
-    sap.conf
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
@@ -58,13 +54,7 @@ PRODUCT_COPY_FILES += \
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/charger:root/charger \
-    $(LOCAL_PATH)/rootdir/charger:recovery/root/charger \
     $(LOCAL_PATH)/rootdir/fstab.qcom:root/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/fstab.qcom:recovery/root/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/lpm.rc:root/lpm.rc \
-    $(LOCAL_PATH)/rootdir/lpm.rc:recovery/root/lpm.rc \
-    $(LOCAL_PATH)/rootdir/init.carrier.rc:root/init.carrier.rc \
     $(LOCAL_PATH)/rootdir/init.qcom.rc:root/init.qcom.rc \
     $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc \
@@ -72,6 +62,7 @@ PRODUCT_COPY_FILES += \
 
 # Etc scripts
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/system/etc/init.crda.sh:system/etc/init.crda.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.audio.sh:system/etc/init.qcom.audio.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
@@ -79,46 +70,80 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh
 
-# Vold configuration
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/vold.fstab:system/etc/vold.fstab
+    $(LOCAL_PATH)/rootdir/system/etc/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
+    $(LOCAL_PATH)/rootdir/system/etc/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
+
+# Config files for hostapd
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/system/etc/hostapd/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
+    $(LOCAL_PATH)/rootdir/system/etc/hostapd/hostapd.accept:system/etc/hostapd/hostapd.accept \
+    $(LOCAL_PATH)/rootdir/system/etc/hostapd/hostapd.deny:system/etc/hostapd/hostapd.deny
+
+# SoftAP
+PRODUCT_PACKAGES += \
+    libQWiFiSoftApCfg \
+    libqsap_sdk
+
+# CRDA
+PRODUCT_PACKAGES += \
+    crda \
+    regdbdump \
+    regulatory.bin \
+    linville.key.pub.pem
+
+# GPS
+PRODUCT_PACKAGES += \
+    gps.msm8960 \
+    gps.conf
+
+# FM radio
+PRODUCT_PACKAGES += \
+    qcom.fmradio \
+    libqcomfm_jni \
+    FM2 \
+    FMRecord
 
 # Torch
 PRODUCT_PACKAGES += Torch
+
+# Lights
+PRODUCT_PACKAGES += lights.msm8960
+
+# QRNGD
+PRODUCT_PACKAGES += qrngd
+
+# qcmediaplayer
+PRODUCT_PACKAGES += qcmediaplayer
+
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
-# Lights
-PRODUCT_PACKAGES += lights.msm8960
-
-# Increase the HWUI font cache since we have tons of RAM
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hwui.text_cache_width=2048
-
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
 
-# QRNGD
-PRODUCT_PACKAGES += qrngd
+# For userdebug builds
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.adb.secure=0
 
 #common build.props
 PRODUCT_PROPERTY_OVERRIDES += \
+    wifi.interface=wlan0 \
     ro.chipname=MSM8930AB \
     ro.ril.hsxpa=1 \
     ro.ril.gprsclass=10 \
     persist.radio.add_power_save=1 \
-    persist.radio.dont_use_dsd=true \
     persist.radio.apm_sim_not_pwdn=1 \
-    ro.qualcomm.bt.hci_transport=smd \
     ro.sf.lcd_density=240 \
     ro.ril.transmitpower=true \
     ro.warmboot.capability=1 \
     ro.qualcomm.cabl=0 \
-    ro.opengles.version=131072 \
-    debug.gr.numframebuffers=3 \
+    debug.composition.type=c2d \
+    ro.opengles.version=196608 \
     af.resampler.quality=255 \
     persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
@@ -126,7 +151,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.use_data_netmgrd=true \
     lpa.decode=true \
     lpa.use-stagefright=true \
-    rild.libpath=/system/lib/libsec-ril.so \
     persist.rild.nitz_plmn="" \
     persist.rild.nitz_long_ons_0="" \
     persist.rild.nitz_long_ons_1="" \
@@ -139,11 +163,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ril.subscription.types=NV,RUIM \
     persist.gps.qmienabled=true \
     persist.gps.qc_nlp_in_use=0 \
-    persist.fuse_sdcard=true
+    persist.fuse_sdcard=true \
+    ro.vold.umsdirtyratio=50 \
+    ro.cwm.enable_key_repeat=true \
+    persist.debug.wfd.enable=1 \
+    persist.sys.wfd.virtual=0 \
+    persist.timed.enable=true
 
-# For userdebug builds
-ADDITIONAL_DEFAULT_PROPERTIES += \
-    ro.secure=0
+# Enable Samsung EMS dial path
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.telephony.ril.v3=samsungEMSReq,newDialCode
 
 # call common msm8930
 $(call inherit-product, device/samsung/msm8930-common/msm8930.mk)

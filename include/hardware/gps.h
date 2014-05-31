@@ -103,35 +103,60 @@ typedef uint16_t GpsLocationFlags;
 #define GPS_CAPABILITY_SINGLE_SHOT      0x0000008
 /** GPS supports on demand time injection */
 #define GPS_CAPABILITY_ON_DEMAND_TIME   0x0000010
+/** GPS supports Geofencing  */
+#define GPS_CAPABILITY_GEOFENCING       0x0000020
 
 /** Flags used to specify which aiding data to delete
     when calling delete_aiding_data(). */
-typedef uint16_t GpsAidingData;
+typedef uint32_t GpsAidingData;
 // IMPORTANT: Note that the following values must match
 // constants in GpsLocationProvider.java.
-#define GPS_DELETE_EPHEMERIS        0x0001
-#define GPS_DELETE_ALMANAC          0x0002
-#define GPS_DELETE_POSITION         0x0004
-#define GPS_DELETE_TIME             0x0008
-#define GPS_DELETE_IONO             0x0010
-#define GPS_DELETE_UTC              0x0020
-#define GPS_DELETE_HEALTH           0x0040
-#define GPS_DELETE_SVDIR            0x0080
-#define GPS_DELETE_SVSTEER          0x0100
-#define GPS_DELETE_SADATA           0x0200
-#define GPS_DELETE_RTI              0x0400
-#define GPS_DELETE_CELLDB_INFO      0x8000
-#define GPS_DELETE_ALL              0xFFFF
+#define GPS_DELETE_EPHEMERIS                     0x00000001
+#define GPS_DELETE_ALMANAC                       0x00000002
+#define GPS_DELETE_POSITION                      0x00000004
+#define GPS_DELETE_TIME                          0x00000008
+#define GPS_DELETE_IONO                          0x00000010
+#define GPS_DELETE_UTC                           0x00000020
+#define GPS_DELETE_HEALTH                        0x00000040
+#define GPS_DELETE_SVDIR                         0x00000080
+#define GPS_DELETE_SVSTEER                       0x00000100
+#define GPS_DELETE_SADATA                        0x00000200
+#define GPS_DELETE_RTI                           0x00000400
+#define GPS_DELETE_CELLDB_INFO                   0x00000800
+#define GPS_DELETE_ALMANAC_CORR                  0x00001000
+#define GPS_DELETE_FREQ_BIAS_EST                 0x00002000
+#define GPS_DELETE_EPHEMERIS_GLO                 0x00004000
+#define GPS_DELETE_ALMANAC_GLO                   0x00008000
+#define GPS_DELETE_SVDIR_GLO                     0x00010000
+#define GPS_DELETE_SVSTEER_GLO                   0x00020000
+#define GPS_DELETE_ALMANAC_CORR_GLO              0x00040000
+#define GPS_DELETE_TIME_GPS                      0x00080000
+#define GPS_DELETE_TIME_GLO                      0x00100000
+
+#define GPS_DELETE_ALL                           0xFFFFFFFF
 
 /** AGPS type */
-typedef uint16_t AGpsType;
+typedef int16_t AGpsType;
+#define AGPS_TYPE_INVALID       -1
+#define AGPS_TYPE_ANY           0
 #define AGPS_TYPE_SUPL          1
 #define AGPS_TYPE_C2K           2
+#define AGPS_TYPE_WWAN_ANY      3
+#define AGPS_TYPE_WIFI          4
+
+/** SSID length */
+#define SSID_BUF_SIZE (32+1)
 
 typedef uint16_t AGpsSetIDType;
 #define AGPS_SETID_TYPE_NONE    0
 #define AGPS_SETID_TYPE_IMSI    1
 #define AGPS_SETID_TYPE_MSISDN  2
+
+typedef int16_t AGpsBearerType;
+#define AGPS_APN_BEARER_INVALID    -1
+#define AGPS_APN_BEARER_IPV4        0
+#define AGPS_APN_BEARER_IPV6        1
+#define AGPS_APN_BEARER_IPV4V6      2
 
 /**
  * String length constants
@@ -228,6 +253,16 @@ typedef uint16_t AGpsStatusValue;
  */
 #define AGPS_RIL_INTERFACE      "agps_ril"
 
+/**
+ * The GPS chipset can use Psc for AGPS
+ */
+#define AGPS_USE_PSC
+
+/**
+ * Name for the GPS_Geofencing interface.
+ */
+#define GPS_GEOFENCING_INTERFACE   "gps_geofencing"
+
 /** Represents a location. */
 typedef struct {
     /** set to sizeof(GpsLocation) */
@@ -270,6 +305,10 @@ typedef struct {
     float   elevation;
     /** Azimuth of SV in degrees. */
     float   azimuth;
+#if 1
+    /** Placeholder for Samsung ABI compat */
+    int     unknown;
+#endif
 } GpsSvInfo;
 
 /** Represents SV status. */
@@ -307,6 +346,9 @@ typedef struct {
     uint16_t mcc;
     uint16_t mnc;
     uint16_t lac;
+#ifdef AGPS_USE_PSC
+    uint16_t psc;
+#endif
     uint32_t cid;
 } AGpsRefLocationCellID;
 
@@ -473,7 +515,10 @@ typedef struct {
 
     AGpsType        type;
     AGpsStatusValue status;
-    uint32_t        ipaddr;
+    uint32_t        ipv4_addr;
+    char            ipv6_addr[16];
+    char            ssid[SSID_BUF_SIZE];
+    char            password[SSID_BUF_SIZE];
 } AGpsStatus;
 
 /** Callback with AGPS status information.
@@ -502,15 +547,16 @@ typedef struct {
      * Notifies that a data connection is available and sets
      * the name of the APN to be used for SUPL.
      */
-    int  (*data_conn_open)( const char* apn );
+    int  (*data_conn_open)( AGpsType agpsType,
+                            const char* apn, AGpsBearerType bearerType );
     /**
      * Notifies that the AGPS data connection has been closed.
      */
-    int  (*data_conn_closed)();
+    int  (*data_conn_closed)( AGpsType agpsType );
     /**
      * Notifies that a data connection is not available for AGPS.
      */
-    int  (*data_conn_failed)();
+    int  (*data_conn_failed)(AGpsType  agpsType );
     /**
      * Sets the hostname and port for the AGPS server.
      */
@@ -673,6 +719,258 @@ typedef struct {
     void (*update_network_availability) (int avaiable, const char* apn);
 } AGpsRilInterface;
 
+/**
+ * GPS Geofence.
+ *      There are 3 states associated with a Geofence: Inside, Outside, Unknown.
+ * There are 3 transitions: ENTERED, EXITED, UNCERTAIN.
+ *
+ * An example state diagram with confidence level: 95% and Unknown time limit
+ * set as 30 secs is shown below. (confidence level and Unknown time limit are
+ * explained latter)
+ *                         ____________________________
+ *                        |       Unknown (30 secs)   |
+ *                         """"""""""""""""""""""""""""
+ *                            ^ |                  |  ^
+ *                   UNCERTAIN| |ENTERED     EXITED|  |UNCERTAIN
+ *                            | v                  v  |
+ *                        ________    EXITED     _________
+ *                       | Inside | -----------> | Outside |
+ *                       |        | <----------- |         |
+ *                        """"""""    ENTERED    """""""""
+ *
+ * Inside state: We are 95% confident that the user is inside the geofence.
+ * Outside state: We are 95% confident that the user is outside the geofence
+ * Unknown state: Rest of the time.
+ *
+ * The Unknown state is better explained with an example:
+ *
+ *                            __________
+ *                           |         c|
+ *                           |  ___     |    _______
+ *                           |  |a|     |   |   b   |
+ *                           |  """     |    """""""
+ *                           |          |
+ *                            """"""""""
+ * In the diagram above, "a" and "b" are 2 geofences and "c" is the accuracy
+ * circle reported by the GPS subsystem. Now with regard to "b", the system is
+ * confident that the user is outside. But with regard to "a" is not confident
+ * whether it is inside or outside the geofence. If the accuracy remains the
+ * same for a sufficient period of time, the UNCERTAIN transition would be
+ * triggered with the state set to Unknown. If the accuracy improves later, an
+ * appropriate transition should be triggered.  This "sufficient period of time"
+ * is defined by the parameter in the add_geofence_area API.
+ *     In other words, Unknown state can be interpreted as a state in which the
+ * GPS subsystem isn't confident enough that the user is either inside or
+ * outside the Geofence. It moves to Unknown state only after the expiry of the
+ * timeout.
+ *
+ * The geofence callback needs to be triggered for the ENTERED and EXITED
+ * transitions, when the GPS system is confident that the user has entered
+ * (Inside state) or exited (Outside state) the Geofence. An implementation
+ * which uses a value of 95% as the confidence is recommended. The callback
+ * should be triggered only for the transitions requested by the
+ * add_geofence_area call.
+ *
+ * Even though the diagram and explanation talks about states and transitions,
+ * the callee is only interested in the transistions. The states are mentioned
+ * here for illustrative purposes.
+ *
+ * Startup Scenario: When the device boots up, if an application adds geofences,
+ * and then we get an accurate GPS location fix, it needs to trigger the
+ * appropriate (ENTERED or EXITED) transition for every Geofence it knows about.
+ * By default, all the Geofences will be in the Unknown state.
+ *
+ * When the GPS system is unavailable, gps_geofence_status_callback should be
+ * called to inform the upper layers of the same. Similarly, when it becomes
+ * available the callback should be called. This is a global state while the
+ * UNKNOWN transition described above is per geofence.
+ *
+ * An important aspect to note is that users of this API (framework), will use
+ * other subsystems like wifi, sensors, cell to handle Unknown case and
+ * hopefully provide a definitive state transition to the third party
+ * application. GPS Geofence will just be a signal indicating what the GPS
+ * subsystem knows about the Geofence.
+ *
+ */
+#define GPS_GEOFENCE_ENTERED     (1<<0L)
+#define GPS_GEOFENCE_EXITED      (1<<1L)
+#define GPS_GEOFENCE_UNCERTAIN   (1<<2L)
+
+#define GPS_GEOFENCE_UNAVAILABLE (1<<0L)
+#define GPS_GEOFENCE_AVAILABLE   (1<<1L)
+
+#define GPS_GEOFENCE_OPERATION_SUCCESS           0
+#define GPS_GEOFENCE_ERROR_TOO_MANY_GEOFENCES -100
+#define GPS_GEOFENCE_ERROR_ID_EXISTS          -101
+#define GPS_GEOFENCE_ERROR_ID_UNKNOWN         -102
+#define GPS_GEOFENCE_ERROR_INVALID_TRANSITION -103
+#define GPS_GEOFENCE_ERROR_GENERIC            -149
+
+/**
+ * The callback associated with the geofence.
+ * Parameters:
+ *      geofence_id - The id associated with the add_geofence_area.
+ *      location    - The current GPS location.
+ *      transition  - Can be one of GPS_GEOFENCE_ENTERED, GPS_GEOFENCE_EXITED,
+ *                    GPS_GEOFENCE_UNCERTAIN.
+ *      timestamp   - Timestamp when the transition was detected.
+ *
+ * The callback should only be called when the caller is interested in that
+ * particular transition. For instance, if the caller is interested only in
+ * ENTERED transition, then the callback should NOT be called with the EXITED
+ * transition.
+ *
+ * IMPORTANT: If a transition is triggered resulting in this callback, the GPS
+ * subsystem will wake up the application processor, if its in suspend state.
+ */
+typedef void (*gps_geofence_transition_callback) (int32_t geofence_id,  GpsLocation* location,
+        int32_t transition, GpsUtcTime timestamp);
+
+/**
+ * The callback associated with the availablity of the GPS system for geofencing
+ * monitoring. If the GPS system determines that it cannot monitor geofences
+ * because of lack of reliability or unavailability of the GPS signals, it will
+ * call this callback with GPS_GEOFENCE_UNAVAILABLE parameter.
+ *
+ * Parameters:
+ *  status - GPS_GEOFENCE_UNAVAILABLE or GPS_GEOFENCE_AVAILABLE.
+ *  last_location - Last known location.
+ */
+typedef void (*gps_geofence_status_callback) (int32_t status, GpsLocation* last_location);
+
+/**
+ * The callback associated with the add_geofence call.
+ *
+ * Parameter:
+ * geofence_id - Id of the geofence.
+ * status - GPS_GEOFENCE_OPERATION_SUCCESS
+ *          GPS_GEOFENCE_ERROR_TOO_MANY_GEOFENCES  - geofence limit has been reached.
+ *          GPS_GEOFENCE_ERROR_ID_EXISTS  - geofence with id already exists
+ *          GPS_GEOFENCE_ERROR_INVALID_TRANSITION - the monitorTransition contains an
+ *              invalid transition
+ *          GPS_GEOFENCE_ERROR_GENERIC - for other errors.
+ */
+typedef void (*gps_geofence_add_callback) (int32_t geofence_id, int32_t status);
+
+/**
+ * The callback associated with the remove_geofence call.
+ *
+ * Parameter:
+ * geofence_id - Id of the geofence.
+ * status - GPS_GEOFENCE_OPERATION_SUCCESS
+ *          GPS_GEOFENCE_ERROR_ID_UNKNOWN - for invalid id
+ *          GPS_GEOFENCE_ERROR_GENERIC for others.
+ */
+typedef void (*gps_geofence_remove_callback) (int32_t geofence_id, int32_t status);
+
+
+/**
+ * The callback associated with the pause_geofence call.
+ *
+ * Parameter:
+ * geofence_id - Id of the geofence.
+ * status - GPS_GEOFENCE_OPERATION_SUCCESS
+ *          GPS_GEOFENCE_ERROR_ID_UNKNOWN - for invalid id
+ *          GPS_GEOFENCE_ERROR_INVALID_TRANSITION -
+ *                    when monitor_transitions is invalid
+ *          GPS_GEOFENCE_ERROR_GENERIC for others.
+ */
+typedef void (*gps_geofence_pause_callback) (int32_t geofence_id, int32_t status);
+
+/**
+ * The callback associated with the resume_geofence call.
+ *
+ * Parameter:
+ * geofence_id - Id of the geofence.
+ * status - GPS_GEOFENCE_OPERATION_SUCCESS
+ *          GPS_GEOFENCE_ERROR_ID_UNKNOWN - for invalid id
+ *          GPS_GEOFENCE_ERROR_GENERIC for others.
+ */
+typedef void (*gps_geofence_resume_callback) (int32_t geofence_id, int32_t status);
+
+typedef struct {
+    gps_geofence_transition_callback geofence_transition_callback;
+    gps_geofence_status_callback geofence_status_callback;
+    gps_geofence_add_callback geofence_add_callback;
+    gps_geofence_remove_callback geofence_remove_callback;
+    gps_geofence_pause_callback geofence_pause_callback;
+    gps_geofence_resume_callback geofence_resume_callback;
+    gps_create_thread create_thread_cb;
+} GpsGeofenceCallbacks;
+
+/** Extended interface for GPS_Geofencing support */
+typedef struct {
+   /** set to sizeof(GpsGeofencingInterface) */
+   size_t          size;
+
+   /**
+    * Opens the geofence interface and provides the callback routines
+    * to the implemenation of this interface.
+    */
+   void  (*init)( GpsGeofenceCallbacks* callbacks );
+
+   /**
+    * Add a geofence area. This api currently supports circular geofences.
+    * Parameters:
+    *    geofence_id - The id for the geofence. If a geofence with this id
+    *       already exists, an error value (GPS_GEOFENCE_ERROR_ID_EXISTS)
+    *       should be returned.
+    *    latitude, longtitude, radius_meters - The lat, long and radius
+    *       (in meters) for the geofence
+    *    last_transition - The current state of the geofence. For example, if
+    *       the system already knows that the user is inside the geofence,
+    *       this will be set to GPS_GEOFENCE_ENTERED. In most cases, it
+    *       will be GPS_GEOFENCE_UNCERTAIN.
+    *    monitor_transition - Which transitions to monitor. Bitwise OR of
+    *       GPS_GEOFENCE_ENTERED, GPS_GEOFENCE_EXITED and
+    *       GPS_GEOFENCE_UNCERTAIN.
+    *    notification_responsiveness_ms - Defines the best-effort description
+    *       of how soon should the callback be called when the transition
+    *       associated with the Geofence is triggered. For instance, if set
+    *       to 1000 millseconds with GPS_GEOFENCE_ENTERED, the callback
+    *       should be called 1000 milliseconds within entering the geofence.
+    *       This parameter is defined in milliseconds.
+    *       NOTE: This is not to be confused with the rate that the GPS is
+    *       polled at. It is acceptable to dynamically vary the rate of
+    *       sampling the GPS for power-saving reasons; thus the rate of
+    *       sampling may be faster or slower than this.
+    *    unknown_timer_ms - The time limit after which the UNCERTAIN transition
+    *       should be triggered. This paramter is defined in milliseconds.
+    *       See above for a detailed explanation.
+    */
+   void (*add_geofence_area) (int32_t geofence_id, double latitude,
+                                double longitude, double radius_meters,
+                                int last_transition, int monitor_transitions,
+                                int notification_responsiveness_ms,
+                                int unknown_timer_ms);
+
+   /**
+    * Pause monitoring a particular geofence.
+    * Parameters:
+    *   geofence_id - The id for the geofence.
+    */
+   void (*pause_geofence) (int32_t geofence_id);
+
+   /**
+    * Resume monitoring a particular geofence.
+    * Parameters:
+    *   geofence_id - The id for the geofence.
+    *   monitor_transitions - Which transitions to monitor. Bitwise OR of
+    *       GPS_GEOFENCE_ENTERED, GPS_GEOFENCE_EXITED and
+    *       GPS_GEOFENCE_UNCERTAIN.
+    *       This supersedes the value associated provided in the
+    *       add_geofence_area call.
+    */
+   void (*resume_geofence) (int32_t geofence_id, int monitor_transitions);
+
+   /**
+    * Remove a geofence area. After the function returns, no notifications
+    * should be sent.
+    * Parameter:
+    *   geofence_id - The id for the geofence.
+    */
+   void (*remove_geofence_area) (int32_t geofence_id);
+} GpsGeofencingInterface;
 __END_DECLS
 
 #endif /* ANDROID_INCLUDE_HARDWARE_GPS_H */

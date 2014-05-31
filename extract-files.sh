@@ -2,6 +2,9 @@
 
 set -e
 
+export VENDOR=samsung
+export DEVICE=wilcox-common
+
 if [ $# -eq 0 ]; then
   SRC=adb
 else
@@ -20,8 +23,7 @@ fi
 
 BASE=../../../vendor/$VENDOR/$DEVICE/proprietary
 rm -rf $BASE/*
-
-for FILE in `egrep -v '(^#|^$)' ../$DEVICE/device-proprietary-files.txt`; do
+for FILE in `egrep -v '(^#|^$)' ../$DEVICE/proprietary-files.txt`; do
   echo "Extracting /system/$FILE ..."
   DIR=`dirname $FILE`
   if [ ! -d $BASE/$DIR ]; then
@@ -34,32 +36,4 @@ for FILE in `egrep -v '(^#|^$)' ../$DEVICE/device-proprietary-files.txt`; do
   fi
 done
 
-for FILE in `egrep -v '(^#|^$)' ../wilcox-common/proprietary-files.txt`; do
-  echo "Extracting /system/$FILE ..."
-  DIR=`dirname $FILE`
-  if [ ! -d $BASE/$DIR ]; then
-    mkdir -p $BASE/$DIR
-  fi
-  if [ "$SRC" = "adb" ]; then
-    adb pull /system/$FILE $BASE/$FILE
-  else
-    cp $SRC/system/$FILE $BASE/$FILE
-  fi
-done
-
-BASE=../../../vendor/$VENDOR/wilcox-common/proprietary
-rm -rf $BASE/*
-for FILE in `egrep -v '(^#|^$)' ../wilcox-common/common-proprietary-files.txt`; do
-  echo "Extracting /system/$FILE ..."
-  DIR=`dirname $FILE`
-  if [ ! -d $BASE/$DIR ]; then
-    mkdir -p $BASE/$DIR
-  fi
-  if [ "$SRC" = "adb" ]; then
-    adb pull /system/$FILE $BASE/$FILE
-  else
-    cp $SRC/system/$FILE $BASE/$FILE
-  fi
-done
-
-./../wilcox-common/setup-makefiles.sh
+./../$DEVICE/setup-makefiles.sh
