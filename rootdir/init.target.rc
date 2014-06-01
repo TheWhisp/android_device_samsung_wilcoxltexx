@@ -189,6 +189,9 @@ on post-fs-data
     chown system input /sys/class/input/input4/wake
     chown system input /sys/class/input/input4/position
 
+    # touchkey
+    chown system system /sys/class/sec/sec_touchkey/brightness
+
     # geomagnetic
     chown system input /sys/class/input/input3/enable
     chown system input /sys/class/input/input3/delay
