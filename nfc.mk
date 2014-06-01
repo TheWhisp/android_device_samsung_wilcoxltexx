@@ -26,7 +26,11 @@ PRODUCT_PACKAGES += \
     Tag \
     com.android.nfc_extras
 
-# NFCEE access control + configuration
-NFCEE_ACCESS_PATH := device/samsung/wilcox-common/nfc/nfcee_access.xml
+# NFCEE access control
+ifeq ($(TARGET_BUILD_VARIANT),user)
+    NFCEE_ACCESS_PATH := device/samsung/wilcox-common/nfc/nfcee_access.xml
+else
+    NFCEE_ACCESS_PATH := device/samsung/wilcox-common/nfc/nfcee_access_debug.xml
+endif
 PRODUCT_COPY_FILES += \
     $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
