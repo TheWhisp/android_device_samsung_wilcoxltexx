@@ -116,7 +116,6 @@ PRODUCT_PACKAGES += qrngd
 # qcmediaplayer
 PRODUCT_PACKAGES += qcmediaplayer
 
-
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
@@ -124,11 +123,6 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
-
-# For userdebug builds
-ADDITIONAL_DEFAULT_PROPERTIES += \
-    ro.secure=0 \
-    ro.adb.secure=0
 
 # Common build properties
 PRODUCT_PROPERTY_OVERRIDES += \
