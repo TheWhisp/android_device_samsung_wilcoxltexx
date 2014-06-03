@@ -1,4 +1,5 @@
 ifeq ($(TARGET_PROVIDES_CAMERA_HAL),true)
+ifeq ($(TARGET_SPECIFIC_CAMERA_HAL),true)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
@@ -58,4 +59,5 @@ LOCAL_MODULE_TAGS := optional
 
 include $(BUILD_SHARED_LIBRARY)
 
+endif
 endif
