@@ -1,15 +1,10 @@
-# Put anything that cannot be in wilcox-common
-# Radio
-lib/libsec-ril.so
-lib/libril.so
-
 # NFC
 lib/hw/nfc.MSM8960.so
 vendor/firmware/libpn547_fw.so
 vendor/firmware/libpn547_fw_pku.so
 vendor/firmware/libpn547_fw_platform.so
 
-# Bins
+# Bluetooth / FM
 bin/btnvtool
 bin/fm_qsoc_patches
 bin/hci_qcomm_init
@@ -58,6 +53,8 @@ lib/libmm-color-convertor.so
 bin/ds_fmc_appd
 bin/qmuxd
 bin/rild
+lib/libsec-ril.so
+lib/libril.so
 bin/rmt_storage
 lib/libcordon.so
 lib/libdsutils.so
@@ -66,8 +63,6 @@ lib/libnetmgr.so
 lib/libomission_avoidance.so
 lib/libreference-ril.so
 lib/libril-qcril-hook-oem.so
-lib/libsec-ril.so
-lib/libril.so
 lib/libsecril-client.so
 vendor/lib/libdiag.so
 vendor/lib/libidl.so
