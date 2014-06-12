@@ -23,7 +23,7 @@
 # inherit from common msm8930
 -include device/samsung/msm8930-common/BoardConfigCommon.mk
 
-TARGET_SPECIFIC_HEADER_PATH := device/samsung/wilcox-common/include
+TARGET_SPECIFIC_HEADER_PATH := device/samsung/wilcoxltexx/include
 
 # Kernel
 BOARD_KERNEL_CMDLINE         := androidboot.hardware=qcom androidboot.selinux=permissive user_debug=31 zcache
@@ -31,19 +31,41 @@ BOARD_KERNEL_BASE            := 0x80200000
 BOARD_MKBOOTIMG_ARGS         := --ramdisk_offset 0x02000000
 BOARD_KERNEL_PAGESIZE        := 2048
 TARGET_KERNEL_SOURCE         := kernel/samsung/msm8930
-TARGET_KERNEL_CONFIG := cyanogenmod/msm8930_cane_defconfig
+TARGET_KERNEL_CONFIG         := cyanogenmod/msm8930_cane_defconfig
+TARGET_KERNEL_VARIANT_CONFIG := msm8930_cane_wilcox_eur_lte_defconfig
 TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
 
 TARGET_BOOTLOADER_BOARD_NAME := MSM8960
 
+# Assert
+TARGET_OTA_ASSERT_DEVICE := wilcoxlte,wilcoxltexx,SM-G3815
+
 # Recovery
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
-TARGET_RECOVERY_FSTAB := device/samsung/wilcox-common/rootdir/fstab.qcom
-TARGET_RECOVERY_INITRC := device/samsung/wilcox-common/rootdir/init.recovery.rc
+TARGET_RECOVERY_FSTAB := device/samsung/wilcoxltexx/rootdir/fstab.qcom
+TARGET_RECOVERY_INITRC := device/samsung/wilcoxltexx/rootdir/init.recovery.rc
 TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/class/lcd/panel/backlight\"
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
 
+# TWRP
+#RECOVERY_VARIANT := twrp
+TW_HAS_DOWNLOAD_MODE := true
+TW_NO_REBOOT_BOOTLOADER := true
+DEVICE_RESOLUTION := 540x960
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+#TW_NO_SCREEN_BLANK := true
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_MAX_BRIGHTNESS := 255
+TW_CRYPTO_FS_TYPE := "ext4"
+TW_NO_USB_STORAGE := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+
+# Partition sizes
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 10485760
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 10485760
@@ -53,7 +75,10 @@ BOARD_CACHEIMAGE_PARTITION_SIZE := 209715200
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/wilcox-common/bluetooth
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/wilcoxltexx/bluetooth
+
+# NFC
+BOARD_HAVE_NFC := true
 
 # Disable initlogo, Samsungs framebuffer is weird
 TARGET_NO_INITLOGO := true
@@ -67,8 +92,9 @@ BOARD_USES_SEPERATED_VOIP := true
 # Use USB Dock Audio
 BOARD_HAVE_DOCK_USBAUDIO := true
 
-# Allow suspend in charge mode
+# Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_RES :=
 
 # Enable QCOM FM feature
 QCOM_FM_ENABLED := true

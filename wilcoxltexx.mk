@@ -15,10 +15,16 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Also get non-open-source specific aspects if available
-$(call inherit-product-if-exists, vendor/samsung/wilcox-common/wilcox-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/wilcoxltexx/wilcoxltexx-vendor.mk)
 
 # Common overlay
-DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcox-common/overlay
+DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcoxltexx/overlay
+
+# Permissions
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+    frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
+    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
@@ -29,6 +35,23 @@ PRODUCT_BOOT_JARS += qcmediaplayer
 # Boot animation
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
+
+# NFC packages
+PRODUCT_PACKAGES += \
+    libnfc \
+    libnfc_jni \
+    Nfc \
+    Tag \
+    com.android.nfc_extras
+
+# NFCEE access control
+ifeq ($(TARGET_BUILD_VARIANT),user)
+    NFCEE_ACCESS_PATH := device/samsung/wilcoxltexx/nfc/nfcee_access.xml
+else
+    NFCEE_ACCESS_PATH := device/samsung/wilcoxltexx/nfc/nfcee_access_debug.xml
+endif
+PRODUCT_COPY_FILES += \
+    $(NFCEE_ACCESS_PATH):system/etc/nfcee_access.xml
 
 # Audio configuration
 PRODUCT_COPY_FILES += \
@@ -58,6 +81,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/init.qcom.rc:root/init.qcom.rc \
     $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc \
+    $(LOCAL_PATH)/rootdir/init.carrier.rc:root/init.carrier.rc \
     $(LOCAL_PATH)/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc
 
 # Etc scripts
@@ -126,6 +150,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Common build properties
 PRODUCT_PROPERTY_OVERRIDES += \
+    rild.libpath=/system/lib/libsec-ril.so \
+    rild.libargs=-d/dev/smd0 \
+    telephony.lteOnGsmDevice=1 \
+    ro.telephony.default_network=9 \
     wifi.interface=wlan0 \
     ro.chipname=MSM8930AB \
     ro.ril.hsxpa=1 \
