@@ -478,11 +478,6 @@ service efsrestorecon /system/bin/restorecon -R /efs
     disabled
     oneshot
 
-service geomagneticd /system/bin/geomagneticd
-    class late_start
-    user compass
-    group system input
-
 service time_daemon /system/bin/time_daemon
     class late_start
     user root
