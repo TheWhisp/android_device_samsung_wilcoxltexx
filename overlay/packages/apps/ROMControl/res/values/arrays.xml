@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright (c) 2013, The Android Open Kang Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<resources>
+    <string-array name="navigation_drawer_entries" translatable="false">
+        <item>@string/category_about_aokp</item>
+        <item>@string/category_general</item>
+        <item>@string/category_lockscreen</item>
+        <item>@string/category_statusbar</item>
+        <item>@string/category_toggles</item>
+        <item>@string/category_hardware_keys</item>
+        <item>@string/category_power_menu</item>
+        <item>@string/category_navbar</item>
+        <item>@string/category_navring</item>
+        <item>@string/category_sound</item>
+        <item>@string/category_installer</item>
+        <item>@string/category_ribbons</item>
+        <item>@string/category_animations</item>
+        <item>@string/category_auto_immersive</item>
+        <item>@string/category_headsup</item>
+    </string-array>
+    <string-array name="navigation_drawer_values" translatable="false">
+        <item>about_aokp</item>
+        <item>general</item>
+        <item>lockscreen</item>
+        <item>statusbar</item>
+        <item>toggles</item>
+        <item>hardware_keys</item>
+        <item>power_menu</item>
+        <item>navbar</item>
+        <item>navring</item>
+        <item>sound</item>
+        <item>installer</item>
+        <item>ribbons</item>
+        <item>animations</item>
+        <item>auto_immersive</item>
+        <item>headsup</item>
+    </string-array>
+    <string-array name="navigation_drawer_icons" translatable="false">
+        <item>@drawable/ic_rom_control_about</item>
+        <item>@drawable/ic_rom_control_general</item>
+        <item>@drawable/ic_rom_control_lockscreens</item>
+        <item>@drawable/ic_rom_control_signal</item>
+        <item>@drawable/ic_rom_control_toggles</item>
+        <item>@drawable/ic_rom_control_hardware_keys</item>
+        <item>@drawable/ic_rom_control_power_menu</item>
+        <item>@drawable/ic_rom_control_navigation_bar</item>
+        <item>@drawable/ic_rom_control_navigation_ring</item>
+        <item>@drawable/ic_rom_control_sound</item>
+        <item>@drawable/ic_rom_control_installer</item>
+        <item>@drawable/ic_rom_control_ribbon</item>
+        <item>@drawable/ic_rom_control_animations</item>
+        <item>@drawable/ic_rom_control_auto_immersive</item>
+        <item>@drawable/ic_rom_control_headsup</item>
+    </string-array>
+</resources>
