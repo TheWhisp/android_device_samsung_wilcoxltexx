@@ -171,7 +171,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
     persist.audio.handset.mic=digital \
-    ro.use_data_netmgrd=true \
     lpa.decode=true \
     lpa.use-stagefright=true \
     persist.rild.nitz_plmn="" \
