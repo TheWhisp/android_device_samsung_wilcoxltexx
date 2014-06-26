@@ -68,9 +68,10 @@ TARGET_NO_INITLOGO := true
 
 # Use seperate speakerphone device
 BOARD_USES_SEPERATED_VOICE_SPEAKER := true
+BOARD_USES_SEPERATED_VOICE_SPEAKER_MIC := true
 
 # Use seperate devices for VOIP
-BOARD_USES_SEPERATED_VOIP := true
+BOARD_USES_SEPERATED_VOIP := false
 
 # Use USB Dock Audio
 BOARD_HAVE_DOCK_USBAUDIO := true
