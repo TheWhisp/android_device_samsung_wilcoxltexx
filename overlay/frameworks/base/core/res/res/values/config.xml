@@ -199,15 +199,4 @@
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareKeys">7</integer>
-
-
-    <!-- Device supports LED flashlight -->
-    <bool name="config_enableTorch">true</bool>
-
-    <!-- Flag indicating whether the RIL_REQUEST_SEND_SMS_EXPECT_MORE
-         API should be used or not. The usage of the API is added
-         by CodeAurora and may not be supported by certain RIL.
-
-         The default value is false which represents AOSP behavior. -->
-    <bool name="config_smsUseExpectMore">true</bool>
 </resources>

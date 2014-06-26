@@ -1,0 +1,7 @@
+# wilcoxltexx hardware information
+ro.device.chipset=Qualcomm Snapdragon 400 MSM8930AB
+ro.device.cpu=Dual Krait 300, 1700 Mhz
+ro.device.gpu=Qualcomm Adreno 305
+ro.device.rear_cam=5 MP
+ro.device.front_cam=0.3 MP
+ro.device.screen_res=540x960
