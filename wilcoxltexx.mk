@@ -172,7 +172,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.vr.enable=false \
     persist.audio.handset.mic=digital \
     lpa.decode=true \
-    lpa.use-stagefright=true \
     persist.rild.nitz_plmn="" \
     persist.rild.nitz_long_ons_0="" \
     persist.rild.nitz_long_ons_1="" \
