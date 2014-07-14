@@ -24,7 +24,8 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcoxltexx/overlay
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
-    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
+    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
+    frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml
 
 # Device uses high-density artwork where available
 PRODUCT_AAPT_CONFIG := normal hdpi
@@ -38,9 +39,7 @@ TARGET_SCREEN_WIDTH := 540
 
 # NFC packages
 PRODUCT_PACKAGES += \
-    libnfc \
-    libnfc_jni \
-    Nfc \
+    NfcNci \
     Tag \
     com.android.nfc_extras
 
