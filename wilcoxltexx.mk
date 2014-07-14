@@ -151,6 +151,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Common build properties
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.product_ship=true \
     rild.libpath=/system/lib/libsec-ril.so \
     rild.libargs=-d/dev/smd0 \
     telephony.lteOnGsmDevice=1 \
