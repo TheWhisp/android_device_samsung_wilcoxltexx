@@ -20,8 +20,6 @@
 <resources>
     <!-- Use ZSL mode for Qualcomm cameras -->
     <bool name="enableZSL">false</bool>
-    <!-- Ignore bogus preferred preview size -->
-    <bool name="ignorePreferredPreviewSizeForVideo">true</bool>
     <!-- Enable histogram support -->
     <bool name="enableHistogram">true</bool>
 </resources>
