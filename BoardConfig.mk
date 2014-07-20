@@ -66,11 +66,14 @@ BOARD_HAVE_NFC := true
 # Disable initlogo, Samsungs framebuffer is weird
 TARGET_NO_INITLOGO := true
 
-# Use seperate devices for VOIP
-BOARD_USES_SEPERATED_VOIP := false
-
 # Use USB Dock Audio
 BOARD_HAVE_DOCK_USBAUDIO := true
+
+# Use seperate speakerphone device
+BOARD_USES_SEPERATED_VOICE_SPEAKER := true
+
+# Use seperate devices for VOIP
+BOARD_USES_SEPERATED_VOIP := true
 
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
