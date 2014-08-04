@@ -39,6 +39,7 @@ TARGET_SCREEN_WIDTH := 540
 
 # NFC packages
 PRODUCT_PACKAGES += \
+    nfc_nci.msm8960 \
     NfcNci \
     Tag \
     com.android.nfc_extras
