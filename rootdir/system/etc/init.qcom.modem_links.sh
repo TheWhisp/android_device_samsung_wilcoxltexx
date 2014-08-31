@@ -46,7 +46,7 @@ cd /firmware/image
 # Get the list of files in /firmware/image
 # for which sym links have to be created
 
-fwfiles=`ls modem* q6* wcnss* dsps* tima_* tzapps* gss* mobicore*`
+fwfiles=`ls modem* q6* wcnss* dsps* tima* lkmauth* tzapps* gss* mobicore*`
 modem_fwfiles=`ls modem_fw.mdt`
 
 # Check if the links with similar names
@@ -169,44 +169,24 @@ case $linksNeeded in
          *)
             log -p w -t PIL 8960 device but no tzapps image found;;
       esac
-      case `ls tima_pkm.mdt 2>/dev/null` in
-         tima_pkm.mdt)
-            for imgfile in tima_pkm*; do
+      case `ls tima.mdt 2>/dev/null` in
+         tima.mdt)
+            for imgfile in tima*; do
                ln -s /firmware/image/$imgfile /system/etc/firmware/$imgfile 2>/dev/null
             done
             break;;
          *)
-            log -p w -t PIL 8960 device but no tima_pkm image found;;
+            log -p w -t PIL 8960 device but no tima image found;;
       esac
-	  case `ls tima_lkm.mdt 2>/dev/null` in
-         tima_lkm.mdt)
-            for imgfile in tima_lkm*; do
+	case `ls lkmauth.mdt 2>/dev/null` in
+         lkmauth.mdt)
+            for imgfile in lkmauth*; do
                ln -s /firmware/image/$imgfile /system/etc/firmware/$imgfile 2>/dev/null
             done
             break;;
          *)
-            log -p w -t PIL 8960 device but no tima_lkm image found;;
+            log -p w -t PIL 8960 device but no lkmauth image found;;
       esac
-      case `ls tima_atn.mdt 2>/dev/null` in
-         tima_atn.mdt)
-            for imgfile in tima_atn*; do
-               ln -s /firmware/image/$imgfile /system/etc/firmware/$imgfile 2>/dev/null
-            done
-            break;;
-         *)
-            log -p w -t PIL 8960 device but no tima_atn image found;;
-      esac
-
-      case `ls tima_key.mdt 2>/dev/null` in
-         tima_key.mdt)
-            for imgfile in tima_key*; do
-               ln -s /firmware/image/$imgfile /system/etc/firmware/$imgfile 2>/dev/null
-            done
-            break;;
-         *)
-            log -p w -t PIL 8960 device but no tima_key image found;;
-      esac
- 
       case `ls mobicore.mdt 2>/dev/null` in
          mobicore.mdt)
             for imgfile in mobicore*; do
@@ -237,8 +217,8 @@ case $linksNeeded in
             break;;
          *)
             log -p w -t PIL 8960 device but no vidc image found;;
-      esac      
-      
+      esac
+
       break;;
 
    *)
@@ -254,4 +234,3 @@ if $mount_needed ;then
 fi
 
 cd /
-

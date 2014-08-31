@@ -1,13 +1,13 @@
 # NFC
-lib/hw/nfc.MSM8960.so
 vendor/firmware/libpn547_fw.so
-vendor/firmware/libpn547_fw_pku.so
-vendor/firmware/libpn547_fw_platform.so
 
-# Bluetooth / FM
+# Bluetooth
 bin/btnvtool
-bin/fm_qsoc_patches
 bin/hci_qcomm_init
+lib/libbtnv.so
+
+# FM Radio
+bin/fm_qsoc_patches
 
 # Thermal
 bin/mpdecision
@@ -37,6 +37,7 @@ vendor/lib/egl/libq3dtools_adreno.so
 vendor/lib/libadreno_utils.so
 vendor/lib/libC2D2.so
 vendor/lib/libc2d2_a3xx.so
+vendor/lib/libCB.so
 vendor/lib/libgsl.so
 vendor/lib/libllvm-a3xx.so
 vendor/lib/libOpenCL.so
@@ -49,6 +50,7 @@ lib/libmm-color-convertor.so
 
 # Radio
 bin/ds_fmc_appd
+bin/netmgrd
 bin/qmuxd
 bin/rild
 lib/libsec-ril.so
@@ -73,8 +75,17 @@ vendor/lib/libqmi_csi.so
 vendor/lib/libqmi_encdec.so
 vendor/lib/libqmiservices.so
 
+# Time services
+bin/time_daemon
+lib/libtime_genoff.so
+
 # GPS
+bin/irsc_util
 lib/libloc_api_v02.so
+vendor/lib/libgeofence.so
+vendor/lib/libizat_core.so
+vendor/lib/liblbs_core.so
+vendor/lib/liblocationservice.so
 
 # Sensors
 lib/hw/sensors.msm8960.so
@@ -122,6 +133,7 @@ lib/libmmmpod.so
 lib/libmmstillomx.so
 lib/liboemcamera.so
 lib/libsecnativefeature.so
+lib/libsensor1.so
 lib/libTsAccm.so
 lib/libTsAwb.so
 
@@ -129,10 +141,23 @@ lib/libTsAwb.so
 lib/libqc-opt.so
 
 # DRM
+bin/insthk
 bin/qseecomd
+lib/drm/libdrmwvmplugin.so
 lib/libdrmdecrypt.so
 lib/libdrmfs.so
 lib/libdrmtime.so
+lib/libhdcp2.so
 lib/libQSEEComAPI.so
-lib/libWVStreamControlAPI_L3.so
 lib/libwvm.so
+vendor/lib/mediadrm/libwvdrmengine.so
+vendor/lib/libwvdrm_L3.so
+vendor/lib/libWVStreamControlAPI_L3.so
+
+# Media
+lib/libOmxAacDec.so
+lib/libOmxAmrwbplusDec.so
+lib/libOmxEvrcDec.so
+lib/libOmxMux.so
+lib/libOmxQcelp13Dec.so
+lib/libOmxWmaDec.so
