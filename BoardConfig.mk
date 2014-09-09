@@ -60,6 +60,9 @@ BOARD_FLASH_BLOCK_SIZE := 131072
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/wilcoxltexx/bluetooth
 
+# Custom RIL class
+BOARD_RIL_CLASS := ../../../device/samsung/wilcoxltexx/ril/
+
 # NFC
 BOARD_HAVE_NFC := true
 BOARD_NFC_CHIPSET := pn547
