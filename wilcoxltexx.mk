@@ -196,7 +196,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     qcom.hw.aac.encoder=true
 
 # RIL
-PRODUCT_PROPERTY_OVERRIDES +=
+PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungMSM8930RIL
 
 
