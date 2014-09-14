@@ -155,7 +155,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.gprsclass=10 \
     persist.radio.add_power_save=1 \
     persist.radio.apm_sim_not_pwdn=1 \
-    persist.radio.use_se_table_only=1 \
+    persist.eons.enabled=true \
     persist.radio.fill_eons=1 \
     persist.radio.prefer_spn=0 \
     persist.data.netmgrd.qos.enable=false \
@@ -193,12 +193,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.timed.enable=true \
     persist.audio.lowlatency.rec=false \
     audio.gapless.playback.disable=true \
-    qcom.hw.aac.encoder=true
+    qcom.hw.aac.encoder=true \
+    ro.config.max_starting_bg=8
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=SamsungMSM8930RIL
-
 
 # call common msm8930
 $(call inherit-product, device/samsung/msm8930-common/msm8930.mk)
