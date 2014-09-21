@@ -274,6 +274,7 @@ on post-fs-data
     chmod 0664 /sys/class/lcd/panel/fps_change
 
     # Permission for Touchscreen, Touchkey.
+    chown system system /sys/class/sec/sec_touchkey/brightness
     chown radio system /sys/class/sec/sec_touchkey/touch_sensitivity
     chown radio system /sys/class/sec/sec_touchkey/touchkey_firm_update
     chown system radio /sys/class/sec/tsp/cmd
