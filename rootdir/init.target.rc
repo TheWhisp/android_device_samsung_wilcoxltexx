@@ -237,6 +237,7 @@ on post-fs-data
     chown nfc nfc /dev/pn547
     chmod 0660 /dev/pn544
     chown nfc nfc /dev/pn544
+    symlink /dev/pn547 /dev/pn544
 
     # NFC_BROADCOM
     chmod 0600 /dev/bcm2079x
