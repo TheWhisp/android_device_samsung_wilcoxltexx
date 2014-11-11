@@ -117,6 +117,11 @@ PRODUCT_PACKAGES += \
 # Torch
 PRODUCT_PACKAGES += Torch
 
+# IPv6 tethering
+PRODUCT_PACKAGES += \
+    ebtables \
+    ethertypes
+
 # GPS/location security configuration file
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config
