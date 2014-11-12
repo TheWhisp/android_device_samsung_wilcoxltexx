@@ -31,8 +31,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
-PRODUCT_BOOT_JARS += qcmediaplayer
-
 # Boot animation
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
@@ -118,15 +116,6 @@ PRODUCT_PACKAGES += \
 
 # Torch
 PRODUCT_PACKAGES += Torch
-
-# Lights
-PRODUCT_PACKAGES += lights.msm8960
-
-# QRNGD
-PRODUCT_PACKAGES += qrngd
-
-# qcmediaplayer
-PRODUCT_PACKAGES += qcmediaplayer
 
 # GPS/location security configuration file
 PRODUCT_COPY_FILES += \
