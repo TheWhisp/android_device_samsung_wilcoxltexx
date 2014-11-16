@@ -39,6 +39,11 @@ TARGET_SCREEN_WIDTH := 540
 PRODUCT_PACKAGES += \
     libgenlock
 
+# Lights
+PRODUCT_PACKAGES += \
+    lights.msm8960
+
+
 # NFC packages
 PRODUCT_PACKAGES += \
     nfc_nci.msm8960 \
