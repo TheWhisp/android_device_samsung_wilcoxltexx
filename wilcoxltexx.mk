@@ -39,9 +39,13 @@ TARGET_SCREEN_WIDTH := 540
 PRODUCT_PACKAGES += \
     libgenlock
 
+# Lights
+PRODUCT_PACKAGES += \
+    lights.msm8960
+
 # NFC packages
 PRODUCT_PACKAGES += \
-    nfc_nci.msm8960 \
+    nfc_nci.pn547.default \
     NfcNci \
     Tag \
     com.android.nfc_extras
@@ -62,6 +66,9 @@ PRODUCT_COPY_FILES += \
 
 # Media Profile
 PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
     $(LOCAL_PATH)/media/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml
 
@@ -86,6 +93,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
     $(LOCAL_PATH)/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc \
     $(LOCAL_PATH)/rootdir/init.target.rc:root/init.target.rc \
+    $(LOCAL_PATH)/rootdir/init.carrier.rc:root/init.carrier.rc \
     $(LOCAL_PATH)/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc
 
 # Etc scripts
@@ -159,6 +167,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.composition.type=c2d \
     ro.opengles.version=196608 \
     af.resampler.quality=4 \
+    mm.enable.qcom_parser=33395 \
     persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
     persist.audio.handset.mic=digital \
@@ -187,11 +196,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.lowlatency.rec=false \
     audio.gapless.playback.disable=true \
     qcom.hw.aac.encoder=true \
-    ro.config.max_starting_bg=8
+    ro.config.max_starting_bg=8 \
+    #media.stagefright.use-awesome=true
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=WilcoxRIL
+
+# For testing, remove later
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.secure=0 \
+    ro.adb.secure=0 \
+    ro.debuggable=1
 
 # call common msm8930
 $(call inherit-product, device/samsung/msm8930-common/msm8930.mk)

@@ -66,13 +66,9 @@ BOARD_RIL_CLASS := ../../../device/samsung/wilcoxltexx/ril/
 # NFC
 BOARD_HAVE_NFC := true
 BOARD_NFC_CHIPSET := pn547
-BOARD_NFC_HAL_SUFFIX := msm8960
 
 # Disable initlogo, Samsungs framebuffer is weird
 TARGET_NO_INITLOGO := true
-
-# Use USB Dock Audio
-BOARD_HAVE_DOCK_USBAUDIO := true
 
 # Use seperate speakerphone device
 BOARD_USES_SEPERATED_VOICE_SPEAKER := true
@@ -85,6 +81,7 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_RES :=
 
 # Enable QCOM FM feature
+QCOM_FLUENCE_ENABLED := false
 QCOM_FM_ENABLED := true
 BOARD_USES_SEPERATED_FM := true
 
