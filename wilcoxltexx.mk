@@ -17,6 +17,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 # Also get non-open-source specific aspects if available
 $(call inherit-product-if-exists, vendor/samsung/wilcoxltexx/wilcoxltexx-vendor.mk)
 
+# call common msm8930
+$(call inherit-product, device/samsung/msm8930-common/msm8930.mk)
+
 # Common overlay
 DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcoxltexx/overlay
 
@@ -208,9 +211,6 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.secure=0 \
     ro.adb.secure=0 \
     ro.debuggable=1
-
-# call common msm8930
-$(call inherit-product, device/samsung/msm8930-common/msm8930.mk)
 
 # call dalvik heap config
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
