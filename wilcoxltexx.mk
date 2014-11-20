@@ -169,7 +169,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.qualcomm.cabl=0 \
     debug.composition.type=c2d \
     ro.opengles.version=196608 \
-    af.resampler.quality=4 \
     mm.enable.qcom_parser=33395 \
     persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
@@ -199,8 +198,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.lowlatency.rec=false \
     audio.gapless.playback.disable=true \
     qcom.hw.aac.encoder=true \
-    ro.config.max_starting_bg=8 \
-    #media.stagefright.use-awesome=true
+    ro.config.max_starting_bg=8
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
