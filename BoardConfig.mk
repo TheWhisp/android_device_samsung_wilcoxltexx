@@ -65,7 +65,7 @@ BOARD_RIL_CLASS := ../../../device/samsung/wilcoxltexx/ril/
 
 # NFC
 BOARD_HAVE_NFC := true
-BOARD_NFC_CHIPSET := pn547
+#BOARD_NFC_CHIPSET := pn547
 
 # Disable initlogo, Samsungs framebuffer is weird
 TARGET_NO_INITLOGO := true
