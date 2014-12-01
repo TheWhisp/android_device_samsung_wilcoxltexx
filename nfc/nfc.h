@@ -207,7 +207,7 @@ static inline int nfc_nci_close(nfc_nci_device_t* dev) {
  */
 #define NFC_HARDWARE_MODULE_ID "nfc"
 
-#define NFC_PN544_CONTROLLER "pn547"
+#define NFC_PN544_CONTROLLER "pn544"
 
 typedef struct nfc_module_t {
     struct hw_module_t common;

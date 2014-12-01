@@ -62,7 +62,7 @@ static int nfc_open(const hw_module_t* module, const char* name,
         dev->num_eeprom_settings = sizeof(pn544_eedata_settings) / 4;
         dev->eeprom_settings = (uint8_t*)pn544_eedata_settings;
         dev->linktype = PN544_LINK_TYPE_I2C;
-        dev->device_node = "/dev/pn547";
+        dev->device_node = "/dev/pn544";
         dev->enable_i2c_workaround = 0;
         *device = (hw_device_t*) dev;
         return 0;
