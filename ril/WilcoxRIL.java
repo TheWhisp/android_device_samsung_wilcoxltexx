@@ -18,9 +18,9 @@ package com.android.internal.telephony;
 
 import static com.android.internal.telephony.RILConstants.*;
 
-import android.os.AsyncResult;
 import android.content.Context;
 import android.telephony.Rlog;
+import android.os.AsyncResult;
 import android.os.Message;
 import android.os.Parcel;
 import android.telephony.PhoneNumberUtils;
@@ -283,6 +283,19 @@ public class WilcoxRIL extends RIL {
         }
     }
 
+    // This call causes ril to crash the socket, stopping further communication
+    @Override
+    public void
+    getHardwareConfig (Message result) {
+        riljLog("Ignoring call to 'getHardwareConfig'");
+        if (result != null) {
+            CommandException ex = new CommandException(
+                CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(result, null, ex);
+            result.sendToTarget();
+        }
+    }
+
     private void
     dialEmergencyCall(String address, int clirMode, Message result) {
         RILRequest rr;
@@ -300,16 +313,31 @@ public class WilcoxRIL extends RIL {
         send(rr);
     }
 
-    // This call causes ril to crash the socket, stopping further communication
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void
-    getHardwareConfig (Message result) {
-        riljLog("Ignoring call to 'getHardwareConfig'");
+    public void getCellInfoList(Message result) {
+        riljLog("getCellInfoList: not supported");
         if (result != null) {
             CommandException ex = new CommandException(
                 CommandException.Error.REQUEST_NOT_SUPPORTED);
             AsyncResult.forMessage(result, null, ex);
             result.sendToTarget();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCellInfoListRate(int rateInMillis, Message response) {
+        riljLog("setCellInfoListRate: not supported");
+        if (response != null) {
+            CommandException ex = new CommandException(
+                CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(response, null, ex);
+            response.sendToTarget();
         }
     }
 }
