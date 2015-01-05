@@ -18,6 +18,7 @@ package com.android.internal.telephony;
 
 import static com.android.internal.telephony.RILConstants.*;
 
+import android.os.AsyncResult;
 import android.content.Context;
 import android.telephony.Rlog;
 import android.os.Message;
@@ -208,31 +209,6 @@ public class WilcoxRIL extends RIL {
         return response;
     }
 
-    // Hack for Lollipop
-    // The system now queries for SIM status before radio on, resulting
-    // in getting an APPSTATE_DETECTED state. The RIL does not send an
-    // RIL_UNSOL_RESPONSE_SIM_STATUS_CHANGED message after the SIM is
-    // initialized, so delay the message until the radio is on.
-    @Override
-    public void
-    getIccCardStatus(Message result) {
-        if (mState != RadioState.RADIO_ON) {
-            mPendingGetSimStatus = result;
-        } else {
-            super.getIccCardStatus(result);
-        }
-    }
-
-    @Override
-    protected void switchToRadioState(RadioState newState) {
-        super.switchToRadioState(newState);
-
-        if (newState == RadioState.RADIO_ON && mPendingGetSimStatus != null) {
-            super.getIccCardStatus(mPendingGetSimStatus);
-            mPendingGetSimStatus = null;
-        }
-    }
-
     @Override
     protected Object
     responseSignalStrength(Parcel p) {
@@ -323,5 +299,18 @@ public class WilcoxRIL extends RIL {
         if (RILJ_LOGD) riljLog(rr.serialString() + "> " + requestToString(rr.mRequest));
 
         send(rr);
+    }
+
+    // This call causes ril to crash the socket, stopping further communication
+    @Override
+    public void
+    getHardwareConfig (Message result) {
+        riljLog("Ignoring call to 'getHardwareConfig'");
+        if (result != null) {
+            CommandException ex = new CommandException(
+                CommandException.Error.REQUEST_NOT_SUPPORTED);
+            AsyncResult.forMessage(result, null, ex);
+            result.sendToTarget();
+        }
     }
 }
