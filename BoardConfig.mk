@@ -41,11 +41,7 @@ TARGET_BOOTLOADER_BOARD_NAME := MSM8960
 TARGET_OTA_ASSERT_DEVICE := wilcoxlte,wilcoxltexx,SM-G3815
 
 # Recovery
-BOARD_USES_MMCUTILS := true
-BOARD_HAS_NO_MISC_PARTITION := true
 TARGET_RECOVERY_FSTAB := device/samsung/wilcoxltexx/rootdir/fstab.qcom
-TARGET_RECOVERY_INITRC := device/samsung/wilcoxltexx/rootdir/init.recovery.rc
-TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/class/lcd/panel/backlight\"
 COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
 
 # Partition sizes
@@ -65,9 +61,6 @@ BOARD_RIL_CLASS := ../../../device/samsung/wilcoxltexx/ril/
 # NFC
 BOARD_HAVE_NFC := true
 #BOARD_NFC_CHIPSET := pn547
-
-# Disable initlogo, Samsungs framebuffer is weird
-TARGET_NO_INITLOGO := true
 
 # Use seperate speakerphone device
 BOARD_USES_SEPERATED_VOICE_SPEAKER := true
