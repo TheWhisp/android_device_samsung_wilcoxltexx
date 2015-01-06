@@ -144,9 +144,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config
 
-# Set default USB interface
+# Set composition for USB
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+
+# Set read only default composition for USB
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.sys.usb.default.config=mtp
 
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -205,6 +209,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     qcom.hw.aac.encoder=true \
     media.stagefright.use-awesome=true \
     ro.config.max_starting_bg=8 \
+    mm.enable.smoothstreaming=true \
     camera2.portability.force_api=1
 
 # RIL
