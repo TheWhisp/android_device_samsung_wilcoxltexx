@@ -3381,7 +3381,7 @@ SectionDevice
 		'AIF1_CAP Mixer SLIM TX1':1:1
 		'SLIM TX1 MUX':0:DEC4
 		'DEC4 MUX':0:ADC1
-		'ADC1 Volume':1:100%
+		'ADC1 Volume':1:63.2%
 		'DEC4 Volume':2:67.7%
 	EndSequence
 
@@ -3540,7 +3540,7 @@ SectionDevice
 		'DEC4 Volume':1:0
 	EndSequence
 
-	ACDBID	11:2
+	ACDBID	4:2
 	EffectsMixerCTL "SRS TruMedia"
 
 EndSection
@@ -3557,8 +3557,8 @@ SectionDevice
 		'SLIM TX2 MUX':0:DEC2
 		'DEC1 MUX':0:ADC1
 		'DEC2 MUX':0:ADC3
-		'ADC1 Volume':2:100%
-		'ADC3 Volume':2:100%
+		'ADC1 Volume':2:78.4%
+		'ADC3 Volume':2:78.4%
 		'DEC1 Volume':2:77.7%
 		'DEC2 Volume':2:77.7%
 	EndSequence
@@ -3932,7 +3932,7 @@ SectionDevice
 	DisableSequence
 	EndSequence
 
-	ACDBID	20:1
+	ACDBID	10:1
 	EffectsMixerCTL "SRS TruMedia"
 
 EndSection
