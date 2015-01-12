@@ -190,7 +190,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.qc.sdk.izat.premium_enabled=0 \
     ro.qc.sdk.izat.service_mask=0x0 \
     ro.gps.agps_provider=1 \
-    persist.fuse_sdcard=true \
     ro.vold.umsdirtyratio=50 \
     persist.debug.wfd.enable=1 \
     persist.sys.wfd.virtual=0 \
