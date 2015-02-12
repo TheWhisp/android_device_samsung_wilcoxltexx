@@ -63,6 +63,4 @@ case $exit_code_hci_qcomm_init in
      exit $exit_code_hci_qcomm_init;;
 esac
 
-setprop bluetooth.status on
-
 exit 0

@@ -197,7 +197,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.use-awesome=true \
     ro.config.max_starting_bg=8 \
     mm.enable.smoothstreaming=true \
-    camera2.portability.force_api=1
+    camera2.portability.force_api=1 \
+    ro.qualcomm.bt.hci_transport=smd
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
