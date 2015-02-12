@@ -125,9 +125,6 @@ PRODUCT_PACKAGES += \
     FM2 \
     FMRecord
 
-# Torch
-PRODUCT_PACKAGES += Torch
-
 # IPv6 tethering
 PRODUCT_PACKAGES += \
     ebtables \
