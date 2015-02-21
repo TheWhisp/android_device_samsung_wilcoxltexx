@@ -43,21 +43,19 @@ PRODUCT_PACKAGES += \
 
 # NFC packages
 PRODUCT_PACKAGES += \
-    nfc.msm8960 \
-    libnfc \
-    libnfc_jni \
-    Nfc \
+    NfcNci \
     Tag \
     com.android.nfc_extras
 
-# NFCEE access control
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/nfc/config/nfcee_access.xml:system/etc/nfcee_access.xml
+# NFC hal
+PRODUCT_PACKAGES += \
+    nfc_nci.pn54x.default
 
 # NFC configuration
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/nfc/config/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
-    $(LOCAL_PATH)/nfc/config/libnfc-brcm.conf:system/etc/libnfc-brcm.conf
+    $(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+    $(LOCAL_PATH)/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
+    $(LOCAL_PATH)/nfc/nfcee_access.xml:system/etc/nfcee_access.xml
 
 # Audio configuration
 PRODUCT_COPY_FILES += \
