@@ -186,7 +186,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.lowlatency.rec=false \
     audio.gapless.playback.disable=true \
     qcom.hw.aac.encoder=true \
-    media.aaccodectype=1 \
     ro.config.max_starting_bg=8 \
     mm.enable.smoothstreaming=true \
     camera2.portability.force_api=1 \
