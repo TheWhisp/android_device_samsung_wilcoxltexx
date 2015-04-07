@@ -33,6 +33,10 @@ PRODUCT_COPY_FILES += \
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
 
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal
+PRODUCT_AAPT_PREF_CONFIG := hdpi
+
 # Genlock is needed for camera blob
 PRODUCT_PACKAGES += \
     libgenlock
