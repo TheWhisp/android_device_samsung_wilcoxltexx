@@ -55,6 +55,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     nfc_nci.pn54x.default
 
+# Doze
+PRODUCT_PACKAGES += \
+    SamsungDoze
+
+
 # NFC configuration
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
