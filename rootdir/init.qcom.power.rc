@@ -1,6 +1,4 @@
 on charger
-    mount_all fstab.qcom
-    class_start charger
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/devices/system/cpu/cpu2/online 1
     write /sys/devices/system/cpu/cpu3/online 1
@@ -66,8 +64,30 @@ on property:dev.bootcomplete=1
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
-    write /dev/cpuctl/cpu.notify_on_migrate 0
     write /sys/module/msm_thermal/core_control/enabled 1
     chown system system /sys/devices/system/cpu/cpu1/online
     chmod 664 /sys/devices/system/cpu/cpu1/online
     start mpdecision
+
+# Powersave
+on property:sys.perf.profile=0
+    start mpdecision
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor conservative
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor conservative
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
+
+# Balanced
+on property:sys.perf.profile=1
+    start mpdecision
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor interactive
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor ondemand
+
+# High performance
+on property:sys.perf.profile=2
+    stop mpdecision
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor performance
+    write /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor performance
+    write /sys/class/kgsl/kgsl-3d0/pwrscale/trustzone/governor performance
