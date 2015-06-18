@@ -165,9 +165,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.transmitpower=true \
     ro.warmboot.capability=1 \
     ro.qualcomm.cabl=0 \
+    ro.hwui.text_large_cache_height=2048
     debug.composition.type=c2d \
     ro.opengles.version=196608 \
-    mm.enable.qcom_parser=3407871 \
+    mm.enable.qcom_parser=3310129 \
     persist.audio.fluence.mode=endfire \
     persist.audio.vr.enable=false \
     persist.audio.handset.mic=digital \
@@ -199,7 +200,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1 \
     ro.qualcomm.bt.hci_transport=smd \
     persist.sys.isUsbOtgEnabled=true \
-    ro.enable_boot_charger_mode=1
+    ro.enable_boot_charger_mode=1 \
+    media.aac_51_output_enabled=true
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
