@@ -25,9 +25,9 @@ DEVICE_PACKAGE_OVERLAYS += device/samsung/wilcoxltexx/overlay
 
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
-    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
+    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
+#    frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
+#    frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml
 
 # Boot animation
 TARGET_SCREEN_HEIGHT := 960
@@ -46,25 +46,24 @@ PRODUCT_PACKAGES += \
     lights.msm8960
 
 # NFC packages
-PRODUCT_PACKAGES += \
-    NfcNci \
-    Tag \
-    com.android.nfc_extras
+#PRODUCT_PACKAGES += \
+#    NfcNci \
+#    Tag \
+#    com.android.nfc_extras
 
 # NFC hal
-PRODUCT_PACKAGES += \
-    nfc_nci.pn54x.default
+#PRODUCT_PACKAGES += \
+#    nfc_nci.pn54x.default
 
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
 
-
 # NFC configuration
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
-    $(LOCAL_PATH)/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
-    $(LOCAL_PATH)/nfc/nfcee_access.xml:system/etc/nfcee_access.xml
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
+#    $(LOCAL_PATH)/nfc/libnfc-nxp.conf:system/etc/libnfc-nxp.conf \
+#    $(LOCAL_PATH)/nfc/nfcee_access.xml:system/etc/nfcee_access.xml
 
 # Audio configuration
 PRODUCT_COPY_FILES += \

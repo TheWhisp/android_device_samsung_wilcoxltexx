@@ -58,8 +58,8 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/samsung/wilcoxltexx/blueto
 BOARD_RIL_CLASS := ../../../device/samsung/wilcoxltexx/ril/
 
 # NFC
-BOARD_HAVE_NFC := true
-BOARD_NFC_CHIPSET := pn547
+#BOARD_HAVE_NFC := true
+#BOARD_NFC_CHIPSET := pn547
 
 # Audio
 BOARD_HAVE_SAMSUNG_AUDIO := true
