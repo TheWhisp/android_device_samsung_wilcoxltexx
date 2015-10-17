@@ -67,7 +67,6 @@ on early-boot
     setrlimit 8 67108864 67108864
 
 on boot
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
     chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
     chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
     chown bluetooth net_bt_stack /sys/devices/platform/msm_serial_hs.0/clock
@@ -397,3 +396,4 @@ on property:persist.sys.ssr.restart_level=3
 on property:sys.boot_completed=1
     start qcom-audio
     start qcom-wifi
+    setprop sys.io.scheduler bfq
