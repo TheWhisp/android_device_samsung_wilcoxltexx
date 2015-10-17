@@ -89,6 +89,10 @@
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
+    <!-- Flag indicating whether we should enable the automatic brightness in Settings.
+         config_hardware_automatic_brightness_available is not set, so we will use software implementation -->
+    <bool name="config_automatic_brightness_available">false</bool>
+
     <!-- Control whether being in the desk dock should enable accelerometer
          based screen orientation.  This defaults to true because it is
          common for desk docks to be sold in a variety of form factors
@@ -147,6 +151,10 @@
         <item>10</item>
     </integer-array>
 
+    <!-- Display low battery warning when battery level dips to this value.
+         Also, the battery stats are flushed to disk when we hit this level.  -->
+    <integer name="config_criticalBatteryWarningLevel">5</integer>
+
     <!-- Minimum screen brightness setting allowed by the power manager.
          The user is forbidden from setting the brightness below this level. -->
     <integer name="config_screenBrightnessSettingMinimum">10</integer>
@@ -175,11 +183,23 @@
     <!-- Whether UI for multi user should be shown -->
     <bool name="config_enableMultiUserUI">true</bool>
 
-    <bool name="config_enableWifiDisplay">true</bool>
+    <!-- Configure mobile tcp buffer sizes in the form:
+         rat-name:rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max
+         If no value is found for the rat-name in use, the system default will be applied.
+    -->
+    <string-array name="config_mobile_tcp_buffers">
+        <item>umts:4094,87380,704512,4096,16384,110208</item>
+        <item>hspa:4092,87380,704512,4096,16384,262144</item>
+        <item>hsupa:4092,87380,704512,4096,16384,262144</item>
+        <item>hsdpa:4092,87380,704512,4096,16384,110208</item>
+        <item>hspap:4092,87380,704512,4096,16384,262144</item>
+        <item>edge:4093,26280,35040,4096,16384,35040</item>
+        <item>gprs:4096,30000,30000,4096,8760,11680</item>
+        <item>evdo:4094,87380,262144,4096,16384,262144</item>
+        <item>lte:524288,1048576,2560000,524288,1048576,2560000</item>
+    </string-array>
 
-    <!-- If true, the screen can be rotated via the accelerometer in all 4
-         rotations as the default behavior. -->
-    <bool name="config_allowAllRotations">true</bool>
+    <bool name="config_enableWifiDisplay">true</bool>
 
     <!-- Set to true if the wifi display supports compositing content stored
          in gralloc protected buffers.  For this to be true, there must exist
@@ -194,6 +214,10 @@
          flag is set for wifi displays.
     -->
     <bool name="config_wifiDisplaySupportsProtectedBuffers">true</bool>
+
+    <!-- If true, the screen can be rotated via the accelerometer in all 4
+         rotations as the default behavior. -->
+    <bool name="config_allowAllRotations">true</bool>
 
    <!-- Hardware 'face' keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
