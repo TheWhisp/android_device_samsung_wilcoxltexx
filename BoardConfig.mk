@@ -33,7 +33,6 @@ BOARD_KERNEL_PAGESIZE        := 2048
 TARGET_KERNEL_SOURCE         := kernel/samsung/msm8930
 TARGET_KERNEL_CONFIG         := cyanogen_cane_defconfig
 TARGET_KERNEL_VARIANT_CONFIG := msm8930_cane_wilcox_eur_lte_defconfig
-TARGET_KERNEL_SELINUX_CONFIG := selinux_defconfig
 
 TARGET_BOOTLOADER_BOARD_NAME := MSM8960
 
