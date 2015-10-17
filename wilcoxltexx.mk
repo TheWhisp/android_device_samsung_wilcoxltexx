@@ -194,7 +194,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     camera2.portability.force_api=1 \
     ro.qualcomm.bt.hci_transport=smd \
     persist.sys.isUsbOtgEnabled=true \
-    ro.enable_boot_charger_mode=1 \
     media.aac_51_output_enabled=true
 
 # RIL
